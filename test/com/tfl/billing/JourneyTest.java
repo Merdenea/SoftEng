@@ -15,12 +15,9 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JourneyTest {
-
-
     private UUID originUUID = UUID.randomUUID();
     private UUID destinationUUID = UUID.randomUUID();
     private UUID custUUID = randomUUID();
-
     private JourneyStart journeyStart = new JourneyStart(custUUID, originUUID);
     private JourneyEnd journeyEnd = new JourneyEnd(custUUID, destinationUUID);
 
@@ -38,6 +35,7 @@ class JourneyTest {
 
     @Test
     void formattedStartTime() {
+
     }
 
     @Test
@@ -59,5 +57,7 @@ class JourneyTest {
     @Test
     void durationMinutes() {
     }
+
+
 
 }

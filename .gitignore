@@ -3,7 +3,7 @@ target
 *.class
 *.iml
 *.ipr
-.idea
+.idea/
 .gradle
 .classpath
 .settings
