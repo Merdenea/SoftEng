@@ -40,6 +40,8 @@ class JourneyTest {
 
     @Test
     void formattedEndTime() {
+
+
     }
 
     @Test
