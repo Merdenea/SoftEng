@@ -10,17 +10,20 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class JourneyEndTest {
 
-    private JourneyEnd journeyEndEvent = new JourneyEnd(UUID.fromString("2cdf6bca-010d-482f-9e78-b8a52bff7515"), UUID.fromString("e2f35f09-2f25-401c-a375-8c045c1d1c92"));
+    private UUID cardUUID = UUID.randomUUID();
+    private UUID readerUUID = UUID.randomUUID();
+
+    private JourneyEnd journeyEndEvent = new JourneyEnd(cardUUID,readerUUID);
 
 
     @Test
     void cardId(){
-        assertThat(journeyEndEvent.cardId(), Is.is(equalTo(UUID.fromString("2cdf6bca-010d-482f-9e78-b8a52bff7515"))));
+        assertThat(journeyEndEvent.cardId(), Is.is(equalTo(cardUUID)));
     }
 
     @Test
     void readerId() {
-        assertThat(journeyEndEvent.readerId(), Is.is(equalTo(UUID.fromString("e2f35f09-2f25-401c-a375-8c045c1d1c92"))));
+        assertThat(journeyEndEvent.readerId(), Is.is(equalTo(readerUUID)));
     }
 
     @Test
