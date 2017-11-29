@@ -12,19 +12,26 @@ import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 class JourneyEventTest {
-    private JourneyEvent journeyEvent = new JourneyEvent(UUID.fromString("5ebb4720-86fd-435e-bc06-cbf24defbe30"), UUID.fromString("5ecb4720-86fd-435e-bc06-cbf24defbe38")){};
+
+    private UUID cardUUID = UUID.randomUUID();
+    private UUID readerUUID = UUID.randomUUID();
+
+
+    private JourneyEvent journeyEvent = new JourneyEvent(cardUUID, readerUUID){};
+
     @Test
     void cardId(){
-        assertThat(journeyEvent.cardId(),is(equalTo(UUID.fromString("5ebb4720-86fd-435e-bc06-cbf24defbe30"))));
+        assertThat(journeyEvent.cardId(),is(equalTo(cardUUID)));
     }
 
     @Test
     void readerId() {
-        assertThat(journeyEvent.readerId(),is(equalTo(UUID.fromString("5ecb4720-86fd-435e-bc06-cbf24defbe38"))));
+        assertThat(journeyEvent.readerId(),is(equalTo(readerUUID)));
     }
 
     @Test
     void time() {
+
         assertThat(lessThanOrEqual(journeyEvent.time(), System.currentTimeMillis()),is(true));
     }
 
