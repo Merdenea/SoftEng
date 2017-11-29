@@ -10,11 +10,10 @@ import static java.util.UUID.randomUUID;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
-import static sun.security.krb5.Confounder.intValue;
 
 class JourneyTest {
 
-    private static void wait(int n) {
+    public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);
         } catch (InterruptedException e) {
