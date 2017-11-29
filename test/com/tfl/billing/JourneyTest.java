@@ -26,7 +26,7 @@ class JourneyTest {
     private UUID destinationUUID = UUID.randomUUID();
     private UUID custUUID = randomUUID();
 
-    private final Journey create (){
+    private final Journey createTimedJourney(){
 
         JourneyStart journeyStart = new JourneyStart(custUUID, originUUID);
         wait(60);
@@ -34,11 +34,10 @@ class JourneyTest {
         return new Journey(journeyStart, journeyEnd);
     }
 
-
-
-    private final Journey journey = create();
-
-
+    JourneyStart journeyStart = new JourneyStart(custUUID, originUUID);
+    JourneyEnd journeyEnd = new JourneyEnd(custUUID, destinationUUID);
+    private final Journey journey = new Journey(journeyStart, journeyEnd);
+    private final Journey timedJourney = createTimedJourney();
     @Test
     void originId() {
         assertThat(journey.originId(),is(equalTo(originUUID)));
@@ -71,12 +70,12 @@ class JourneyTest {
 
     @Test
     void durationSeconds() {
-        assertThat(journey.durationSeconds(), is(equalTo(60)));
+        assertThat(timedJourney.durationSeconds(), is(equalTo(60)));
     }
 
     @Test
     void durationMinutes() {
-        String duration = journey.durationMinutes();
+        String duration = timedJourney.durationMinutes();
         String[] parts = duration.split(":");
         assertThat(parseInt(parts[0]) * 60 + parseInt(parts[1]), is(equalTo(60)));
     }
