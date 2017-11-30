@@ -18,7 +18,6 @@ class JourneyEventTest {
 
 
     private JourneyEvent journeyEvent = new JourneyEvent(cardUUID, readerUUID){};
-
     @Test
     void cardId(){
         assertThat(journeyEvent.cardId(),is(equalTo(cardUUID)));
