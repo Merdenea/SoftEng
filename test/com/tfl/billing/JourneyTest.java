@@ -2,6 +2,7 @@ package com.tfl.billing;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -81,7 +82,7 @@ class JourneyTest {
 
     @Test
     void startTime() {
-        assertThat(journey.startTime() instanceof Date, is(true));
+        assertThat(journey.startTime() instanceof LocalDateTime, is(true));
     }
 
     @Test
@@ -91,7 +92,7 @@ class JourneyTest {
 
     @Test
     void endTime() {
-        assertThat(journey.endTime() instanceof Date, is(true));
+        assertThat(journey.endTime() instanceof LocalDateTime, is(true));
     }
 
     @Test
