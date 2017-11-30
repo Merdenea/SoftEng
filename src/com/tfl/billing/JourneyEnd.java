@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class JourneyEnd extends JourneyEvent {
 
-    public JourneyEnd(UUID cardId, UUID readerId) {
+    public JourneyEnd(UUID cardId, UUID readerId)throws NullArgumentException {
         super(cardId, readerId);
     }
 }
