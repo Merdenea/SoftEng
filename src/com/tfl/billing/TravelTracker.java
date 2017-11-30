@@ -66,6 +66,7 @@ public class TravelTracker implements ScanListener {
     public BigDecimal getTotalCharges(){
         return totalCharges;
     }
+    public Set getCurrentlyTravleing(){return currentlyTravelling;}
 
     private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);

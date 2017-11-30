@@ -37,12 +37,12 @@ class TravelTrackerTest {
     }
 
     @Test
-    void connect() throws InterruptedException {
-
+    void currentlyTraveling() throws InterruptedException {
+        travelTracker.connect(paddingtonReader, bakerStreetReader);
+        paddingtonReader.touch(myCard);
+        assertThat(travelTracker.getCurrentlyTravleing().contains(myCard.id()), is(true));
+        bakerStreetReader.touch(myCard);
+        travelTracker.chargeAccounts();
+        assertThat(travelTracker.getCurrentlyTravleing().contains(myCard.id()), is(false));
     }
-
-    @Test
-    void cardScanned() {
-    }
-
 }
