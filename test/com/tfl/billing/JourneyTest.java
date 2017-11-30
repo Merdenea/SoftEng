@@ -2,6 +2,7 @@ package com.tfl.billing;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,7 +15,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 class JourneyTest {
 
     //Seconds to wait for the timed journeys
-    private int waitTime = 60;
+    private int waitTime = 1;
     public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);
@@ -58,7 +59,7 @@ class JourneyTest {
 
     @Test
     void startTime() {
-        assertThat(journey.startTime() instanceof Date, is(true));
+        assertThat(journey.startTime() instanceof LocalDateTime, is(true));
     }
 
     @Test
@@ -68,7 +69,7 @@ class JourneyTest {
 
     @Test
     void endTime() {
-        assertThat(journey.endTime() instanceof Date, is(true));
+        assertThat(journey.endTime() instanceof LocalDateTime, is(true));
     }
 
     @Test

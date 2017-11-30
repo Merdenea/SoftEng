@@ -1,6 +1,10 @@
 package com.tfl.billing;
 
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,12 +34,12 @@ public class Journey {
         return format(end.time());
     }
 
-    public Date startTime() {
-        return new Date(start.time());
+    public LocalDateTime startTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(start.time()), ZoneId.systemDefault());
     }
 
-    public Date endTime() {
-        return new Date(end.time());
+    public LocalDateTime endTime() {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(end.time()), ZoneId.systemDefault());
     }
 
     public int durationSeconds() {
