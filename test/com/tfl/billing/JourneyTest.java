@@ -13,8 +13,16 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class JourneyTest {
 
+<<<<<<< HEAD
     //Seconds to wait for the timed journeys
     private int waitTime = 60;
+=======
+
+
+
+    //Seconds to wait for the timed journeys
+    private int waitTime = 0;
+>>>>>>> bogdan
     public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);
@@ -37,8 +45,32 @@ class JourneyTest {
 
     JourneyStart journeyStart = new JourneyStart(custUUID, originUUID);
     JourneyEnd journeyEnd = new JourneyEnd(custUUID, destinationUUID);
+
     private final Journey journey = new Journey(journeyStart, journeyEnd);
     private final Journey timedJourney = createTimedJourney();
+
+
+    @Test
+    void nullOrigin() {
+        boolean thrown = false;
+        try{
+            JourneyStart nullstart = new JourneyStart(custUUID, null);
+        } catch (NullArgumentException e){
+            thrown = true;
+        }
+        assertThat(thrown, is(true));
+    }
+
+    @Test
+    void nullDestination(){
+        boolean thrown = false;
+        try{
+            JourneyEnd nullend = new JourneyEnd(custUUID,null);
+        } catch  (NullArgumentException e){
+            thrown = true;
+        }
+        assertThat(thrown, is(true));
+    }
 
 
     @Test
