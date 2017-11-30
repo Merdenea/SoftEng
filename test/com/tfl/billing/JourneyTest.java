@@ -14,6 +14,8 @@ import static sun.security.krb5.Confounder.intValue;
 
 class JourneyTest {
 
+    //Seconds to wait for the timed journeys
+    private int waitTime = 60;
     private static void wait(int n) {
         try {
             Thread.sleep(n * 1000);
@@ -29,7 +31,7 @@ class JourneyTest {
     private final Journey createTimedJourney(){
 
         JourneyStart journeyStart = new JourneyStart(custUUID, originUUID);
-        wait(60);
+        wait(waitTime);
         JourneyEnd journeyEnd = new JourneyEnd(custUUID, destinationUUID);
         return new Journey(journeyStart, journeyEnd);
     }
@@ -38,6 +40,8 @@ class JourneyTest {
     JourneyEnd journeyEnd = new JourneyEnd(custUUID, destinationUUID);
     private final Journey journey = new Journey(journeyStart, journeyEnd);
     private final Journey timedJourney = createTimedJourney();
+
+
     @Test
     void originId() {
         assertThat(journey.originId(),is(equalTo(originUUID)));
@@ -70,13 +74,13 @@ class JourneyTest {
 
     @Test
     void durationSeconds() {
-        assertThat(timedJourney.durationSeconds(), is(equalTo(60)));
+        assertThat(timedJourney.durationSeconds(), is(equalTo(waitTime)));
     }
 
     @Test
     void durationMinutes() {
         String duration = timedJourney.durationMinutes();
         String[] parts = duration.split(":");
-        assertThat(parseInt(parts[0]) * 60 + parseInt(parts[1]), is(equalTo(60)));
+        assertThat(parseInt(parts[0]) * 60 + parseInt(parts[1]), is(equalTo(waitTime)));
     }
 }
