@@ -90,7 +90,7 @@ public class TravelTracker implements ScanListener {
     }
 
     @Override
-    public void cardScanned(UUID cardId, UUID readerId) {
+    public void cardScanned(UUID cardId, UUID readerId){
         if (currentlyTravelling.contains(cardId)) {
             eventLog.add(new JourneyEnd(cardId, readerId));
             currentlyTravelling.remove(cardId);

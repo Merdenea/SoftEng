@@ -12,17 +12,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 class JourneyTest {
-
-<<<<<<< HEAD
-    //Seconds to wait for the timed journeys
-    private int waitTime = 60;
-=======
-
-
-
     //Seconds to wait for the timed journeys
     private int waitTime = 0;
->>>>>>> bogdan
     public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);
