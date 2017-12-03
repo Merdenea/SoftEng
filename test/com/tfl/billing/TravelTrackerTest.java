@@ -1,17 +1,10 @@
 package com.tfl.billing;
 
-import com.tfl.external.CustomerDatabase;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
 import com.tfl.underground.OysterReaderLocator;
 import com.tfl.underground.Station;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.math.BigDecimal;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -31,18 +24,21 @@ class TravelTrackerTest {
         bakerStreetReader.touch(myCard);
         bakerStreetReader.touch(myCard);
         kingsCrossReader.touch(myCard);
-        travelTracker.chargeAccounts();
-        BigDecimal actualValue = travelTracker.getTotalCharges();
-        assertThat(actualValue.doubleValue(), is(equalTo(4.80)));
+        bakerStreetReader.touch(myCard);
+        kingsCrossReader.touch(myCard);
+        bakerStreetReader.touch(myCard);
+        kingsCrossReader.touch(myCard);
+        travelTracker.processPayments();
+        assertThat(4, is(equalTo(4.80)));
     }
 
     @Test
     void currentlyTraveling() throws InterruptedException {
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         paddingtonReader.touch(myCard);
-        assertThat(travelTracker.getCurrentlyTravleing().contains(myCard.id()), is(true));
+        assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(true));
         bakerStreetReader.touch(myCard);
-        travelTracker.chargeAccounts();
-        assertThat(travelTracker.getCurrentlyTravleing().contains(myCard.id()), is(false));
+        //travelTracker.chargeAccounts();
+        assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(false));
     }
 }

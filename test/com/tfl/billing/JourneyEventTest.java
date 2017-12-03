@@ -30,7 +30,6 @@ class JourneyEventTest {
 
     @Test
     void time() {
-
         assertThat(lessThanOrEqual(journeyEvent.time(), System.currentTimeMillis()),is(true));
     }
 

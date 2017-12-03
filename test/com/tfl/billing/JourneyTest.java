@@ -14,7 +14,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class JourneyTest {
     //Seconds to wait for the timed journeys
-    private int waitTime = 0;
+    private int waitTime = 2;
     public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);

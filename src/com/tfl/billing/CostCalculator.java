@@ -1,9 +1,7 @@
 package com.tfl.billing;
 
 import java.math.BigDecimal;
-import java.time.Period;
 import java.util.*;
-import java.time.LocalTime;
 
 public class CostCalculator {
     private BigDecimal totalCost = new BigDecimal(0);
@@ -24,7 +22,7 @@ public class CostCalculator {
         this.journeys = journeys;
     }
     //make public for testing
-    private boolean isLongJouney(Journey journey){
+    private boolean isLongJourney(Journey journey){
         return journey.durationSeconds() / 60 >  longJourneyDuration;
     }
     //same here
@@ -43,13 +41,13 @@ public class CostCalculator {
         for (Journey journey : journeys){
             if(isPeak(journey)){
                 peakTimeTravel = true;
-                if (isLongJouney(journey))
+                if (isLongJourney(journey))
                     totalCost = totalCost.add(PEAK_LONG);
                 else
                     totalCost = totalCost.add(PEAK_SHORT);
             }
             else{
-                if(isLongJouney(journey))
+                if(isLongJourney(journey))
                    totalCost = totalCost.add(OFF_PEAK_LONG);
                 else
                    totalCost = totalCost.add(OFF_PEAK_SHORT);
@@ -65,9 +63,13 @@ public class CostCalculator {
         }
     }
 
+    private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
+        return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
+    }
+
     public BigDecimal getCost(){
         calculateCost();
-        return totalCost;
+        return roundToNearestPenny(totalCost);
     }
 
 }
