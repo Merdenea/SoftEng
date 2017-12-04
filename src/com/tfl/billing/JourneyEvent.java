@@ -1,5 +1,6 @@
 package com.tfl.billing;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class JourneyEvent {
@@ -17,10 +18,19 @@ public abstract class JourneyEvent {
         else {
             throw new NullArgumentException();
         }
-
-
-
     }
+    //Overload the constructor to enable testing for long/short journeys
+    public JourneyEvent (UUID cardId, UUID readerId, long time){
+        if(readerId != null && cardId != null) {
+            this.cardId = cardId;
+            this.readerId = readerId;
+            this.time = time;
+        }
+        else {
+            throw new NullArgumentException();
+        }
+    }
+
 
     public UUID cardId() {
         return cardId;
