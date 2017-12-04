@@ -19,10 +19,6 @@ public class TravelTracker implements ScanListener {
         }
     }
 
-    public void processPayments(){
-        PaymentProcessor paymentProcessor = new PaymentProcessor(eventLog);
-        paymentProcessor.chargeAccounts();
-    }
 
     @Override
     public void cardScanned(UUID cardId, UUID readerId){
@@ -38,6 +34,11 @@ public class TravelTracker implements ScanListener {
             }
         }
 
+    }
+
+    public void processPayments(){
+        PaymentProcessor paymentProcessor = new PaymentProcessor(eventLog);
+        paymentProcessor.chargeAccounts();
     }
 
 }
