@@ -17,14 +17,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class TravelTrackerTest {
     private OysterCard testSetup() {
-        OysterCard oysterCard;
         try {
-              oysterCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+             return new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
         } catch (UnknownOysterCardException e) {
-            System.out.println("exception thrown from here");
             return testSetup();
         }
-        return oysterCard;
     }
 
     private OysterCard myCard = testSetup();
@@ -40,12 +37,8 @@ class TravelTrackerTest {
         travelTracker.connect(paddingtonReader, bakerStreetReader, kingsCrossReader);
         paddingtonReader.touch(myCard);
         bakerStreetReader.touch(myCard);
+        paddingtonReader.touch(myCard);
         bakerStreetReader.touch(myCard);
-        kingsCrossReader.touch(myCard);
-        bakerStreetReader.touch(myCard);
-        kingsCrossReader.touch(myCard);
-        bakerStreetReader.touch(myCard);
-        kingsCrossReader.touch(myCard);
         travelTracker.processPayments();
 
         //assertThat(4, is(equalTo(4.80)));
