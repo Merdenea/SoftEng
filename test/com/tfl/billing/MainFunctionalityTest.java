@@ -79,6 +79,7 @@ class MainFunctionalityTest {
         } catch (ParseException e) {
             System.out.println("Failed to convert string");
         }
+        return 0;
     }
 
 
