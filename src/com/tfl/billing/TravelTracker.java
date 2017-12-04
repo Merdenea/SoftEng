@@ -2,13 +2,15 @@ package com.tfl.billing;
 
 import com.oyster.*;
 import com.tfl.external.CustomerDatabase;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 public class TravelTracker implements ScanListener {
 
     private final List<JourneyEvent> eventLog = new ArrayList<>();
     private final Set<UUID> currentlyTravelling = new HashSet<>();
-
+    private final PaymentProcessor paymentProcessor = new PaymentProcessor(eventLog);
     public Set getCurrentlyTraveling(){
         return currentlyTravelling;
     }
@@ -18,10 +20,6 @@ public class TravelTracker implements ScanListener {
             cardReader.register(this);
         }
     }
-
-
-
-
 
     @Override
     public void cardScanned(UUID cardId, UUID readerId){
@@ -39,7 +37,6 @@ public class TravelTracker implements ScanListener {
 
     }
 
-
     public void cardScanned(UUID cardId, UUID readerId, long time){
         if (currentlyTravelling.contains(cardId)) {
             eventLog.add(new JourneyEnd(cardId, readerId, time));
@@ -56,8 +53,11 @@ public class TravelTracker implements ScanListener {
     }
 
     public void processPayments(){
-        PaymentProcessor paymentProcessor = new PaymentProcessor(eventLog);
         paymentProcessor.chargeAccounts();
+    }
+
+    public BigDecimal getTotalDailyCharges(){
+        return paymentProcessor.getTotalDailyCharge();
     }
 
 }

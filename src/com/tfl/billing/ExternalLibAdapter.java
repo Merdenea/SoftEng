@@ -11,11 +11,11 @@ import com.tfl.underground.Station;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ExternalDatabaseAdapter implements CustomerDatabseInterface {
+public class ExternalLibAdapter implements CustomerLibInterface {
 
 
     @Override
-    public List<Customer> getCustomer() {
+    public List<Customer> getCustomers() {
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();
         List<Customer> customers = customerDatabase.getCustomers();
         return customers;

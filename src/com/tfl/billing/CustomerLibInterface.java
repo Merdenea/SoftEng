@@ -8,8 +8,8 @@ import com.tfl.underground.Station;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface CustomerDatabseInterface {
-    List<Customer> getCustomer();
+public interface CustomerLibInterface {
+    List<Customer> getCustomers();
 
     OysterCardReader getCardReader(Station station);
 
