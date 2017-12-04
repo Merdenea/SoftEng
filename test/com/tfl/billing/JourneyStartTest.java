@@ -16,10 +16,6 @@ class JourneyStartTest {
     private JourneyStart journeyStartEvent = new JourneyStart(cardUUID,readerUUID);
 
     @Test
-    void newOysterCard(){
-
-    }
-    @Test
     void cardId(){
         assertThat(journeyStartEvent.cardId(), Is.is(equalTo(cardUUID)));
     }

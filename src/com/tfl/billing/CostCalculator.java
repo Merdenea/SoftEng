@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 public class CostCalculator {
-    private BigDecimal totalCost = new BigDecimal(0);
     private final int longJourneyDuration = 25;
-    private List<Journey> journeys;
     boolean peakTimeTravel = false;
 
     private static final BigDecimal DAILY_PEAK_CAP = new BigDecimal(9.00);
@@ -18,14 +16,18 @@ public class CostCalculator {
     private static final BigDecimal OFF_PEAK_LONG = new BigDecimal(2.70);
     private static final BigDecimal OFF_PEAK_SHORT = new BigDecimal(1.60);
 
-    public CostCalculator(List<Journey> journeys){
-        this.journeys = journeys;
+
+    private static CostCalculator instance = new CostCalculator();
+    public static CostCalculator getInstance() {
+        return instance;
     }
-    //make public for testing
+    private CostCalculator(){}
+
+
     private boolean isLongJourney(Journey journey){
         return journey.durationSeconds() / 60 >  longJourneyDuration;
     }
-    //same here
+
     private boolean isPeak(Journey journey){
         return isPeak(journey.startTime().getHour()) ||
                 isPeak(journey.endTime().getHour());
@@ -35,9 +37,9 @@ public class CostCalculator {
         return (n >= 6 && n < 10) ||
                 (n >= 17 && n < 20);
     }
-    //maybe change to one??>
 
-    private void calculateCost(){
+    private BigDecimal calculateCost(List<Journey> journeys){
+        BigDecimal totalCost = new BigDecimal(0);
         for (Journey journey : journeys){
             if(isPeak(journey)){
                 peakTimeTravel = true;
@@ -61,15 +63,15 @@ public class CostCalculator {
             if(totalCost.compareTo(DAILY_OFF_PEAK_CAP) > 0)
                 totalCost = DAILY_OFF_PEAK_CAP;
         }
+        return roundToNearestPenny(totalCost);
     }
 
     private BigDecimal roundToNearestPenny(BigDecimal poundsAndPence) {
         return poundsAndPence.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    public BigDecimal getCost(){
-        calculateCost();
-        return roundToNearestPenny(totalCost);
+    public BigDecimal getCost(List<Journey> journeys){
+        return calculateCost(journeys);
     }
 
 }

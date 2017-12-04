@@ -11,13 +11,14 @@ import java.util.List;
 public class PaymentProcessor {
 
     private final List<JourneyEvent> eventLog;
+    private ExternalDatabaseAdapter adapter = new ExternalDatabaseAdapter();
 
     public PaymentProcessor(List<JourneyEvent> eventLog){
         this.eventLog = eventLog;
     }
 
     public void chargeAccounts(){
-        List<Customer> customers = new ExternalDatabaseAdapter().getCustomer();
+        List<Customer> customers = adapter.getCustomer();
         for (Customer customer : customers){
             chargeCustomer(customer);
         }
@@ -44,8 +45,8 @@ public class PaymentProcessor {
             }
         }
 
-        CostCalculator costCalculator = new CostCalculator(journeys);
-        BigDecimal customerTotal = costCalculator.getCost();
-        PaymentsSystem.getInstance().charge(customer, journeys, customerTotal);
+        CostCalculator costCalculator = CostCalculator.getInstance();
+        BigDecimal customerTotal = costCalculator.getCost(journeys);
+        adapter.charge(customer, journeys, customerTotal);
     }
 }

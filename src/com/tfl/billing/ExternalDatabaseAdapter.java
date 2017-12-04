@@ -13,6 +13,7 @@ import java.util.List;
 
 public class ExternalDatabaseAdapter implements CustomerDatabseInterface {
 
+
     @Override
     public List<Customer> getCustomer() {
         CustomerDatabase customerDatabase = CustomerDatabase.getInstance();

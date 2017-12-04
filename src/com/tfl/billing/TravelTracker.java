@@ -9,8 +9,9 @@ public class TravelTracker implements ScanListener {
     private final List<JourneyEvent> eventLog = new ArrayList<>();
     private final Set<UUID> currentlyTravelling = new HashSet<>();
 
-    public Set getCurrentlyTraveling(){return currentlyTravelling;}
-
+    public Set getCurrentlyTraveling(){
+        return currentlyTravelling;
+    }
 
     public void connect(OysterCardReader... cardReaders) {
         for (OysterCardReader cardReader : cardReaders) {
