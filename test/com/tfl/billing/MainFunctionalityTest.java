@@ -1,7 +1,6 @@
 package com.tfl.billing;
 
 import com.tfl.external.Customer;
-import com.tfl.underground.OysterReaderLocator;
 import org.junit.jupiter.api.Test;
 import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
@@ -10,27 +9,15 @@ import com.tfl.underground.Station;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
 
 
 class MainFunctionalityTest {
 
-    private OysterCard testOysterCardSetup (String id) {
-        try {
-            return new OysterCard(id);
-        }
-        catch (UnknownOysterCardException e) {
-
-            return testOysterCardSetup(id);
-        }
-    }
-
-    private OysterCard myCard = testOysterCardSetup("38400000-8cf0-11bd-b23e-10b96e4ef00d");
+    private OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
     private ExternalLibAdapter adapter = new ExternalLibAdapter();
     private OysterCardReader paddingtonReader = adapter.getCardReader(Station.PADDINGTON);
     private OysterCardReader bakerStreetReader = adapter.getCardReader(Station.BAKER_STREET);
@@ -48,7 +35,6 @@ class MainFunctionalityTest {
         bakerStreetReader.touch(myCard);
         assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(false));
     }
-
 
     @Test
     void shortOffPeakCorrectCharge(){
@@ -152,12 +138,10 @@ class MainFunctionalityTest {
     void incompleteJourneyCorrectCharge(){
         travelTracker.connect(victoriaReader, eustonReader, waterlooReader);
         victoriaReader.touch(myCard);
+        eustonReader.touch(myCard);
+        waterlooReader.touch(myCard);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
-        //eustonReader.touch(myCard);
-       // waterlooReader.touch(myCard);
-        //travelTracker.processPayments();
-       // assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }
 
     private long toMillisSinceEpoch(String time){

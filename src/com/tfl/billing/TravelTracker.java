@@ -31,7 +31,6 @@ public class TravelTracker implements ScanListener {
                 throw new UnknownOysterCardException(cardId);
             }
         }
-
     }
 
     public void cardScanned(UUID cardId, UUID readerId, long time){
