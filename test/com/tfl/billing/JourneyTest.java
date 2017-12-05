@@ -3,7 +3,6 @@ package com.tfl.billing;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 import static java.lang.Integer.parseInt;
@@ -14,7 +13,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 class JourneyTest {
     //Seconds to wait for the timed journeys
-    private int waitTime = 1;
+    private int waitTime = 0;
     public static void wait(int n) {
         try {
             Thread.sleep(n * 1000);

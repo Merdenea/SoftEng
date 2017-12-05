@@ -89,27 +89,6 @@ class MainFunctionalityTest {
     }
 
     @Test
-    void dailyOffPeakCapCorrectCharge(){
-        String startTime1 = "2017/12/04 12:01:10";
-        String endTime1 = "2017/12/04 12:30:00";
-        String startTime2 = "2017/12/04 12:35:00";
-        String endTime2 = "2017/12/04 13:02:00";
-        String startTime3 = "2017/12/04 13:05:45";
-        String endTime3 = "2017/12/04 14:02:12";
-        adapter.getCustomers().clear();
-        adapter.getCustomers().add(new Customer("vlad@testing", testCard));
-        travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1));
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1));
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2));
-        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2));
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3));
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3));
-        travelTracker.processPayments();
-        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(7.00)));
-    }
-
-    @Test
     void dailyPeakCapCorrectCharge(){
         String startTime1 = "2017/12/04 12:01:10";
         String endTime1 = "2017/12/04 12:30:00";
@@ -135,6 +114,28 @@ class MainFunctionalityTest {
     }
 
     @Test
+    void dailyOffPeakCapCorrectCharge(){
+        String startTime1 = "2017/12/04 12:01:10";
+        String endTime1 = "2017/12/04 12:30:00";
+        String startTime2 = "2017/12/04 12:35:00";
+        String endTime2 = "2017/12/04 13:02:00";
+        String startTime3 = "2017/12/04 13:05:45";
+        String endTime3 = "2017/12/04 14:02:12";
+        adapter.getCustomers().clear();
+        adapter.getCustomers().add(new Customer("vlad@testing", testCard));
+        travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1));
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1));
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2));
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2));
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3));
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3));
+        travelTracker.processPayments();
+        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(7.00)));
+    }
+
+
+    @Test
     void incompleteJourneyCorrectCharge(){
         travelTracker.connect(victoriaReader, eustonReader, waterlooReader);
         victoriaReader.touch(myCard);
@@ -142,6 +143,25 @@ class MainFunctionalityTest {
         waterlooReader.touch(myCard);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
+    }
+
+    @Test
+    void multipleCustomersTest(){
+        String startTime1 = "2017/12/04 12:01:10";
+        String endTime1 = "2017/12/04 12:30:00";
+        String startTime2 = "2017/12/04 12:15:00";
+        String endTime2 = "2017/12/04 12:28:00";
+        OysterCard testCard2 = new OysterCard();
+        adapter.getCustomers().clear();
+        adapter.getCustomers().add(new Customer("vlad@testing1", testCard));
+        adapter.getCustomers().add(new Customer("vlad@testing2", testCard2));
+        travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader);
+        travelTracker.cardScanned(testCard2.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1));
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(startTime2));
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(endTime2));
+        travelTracker.cardScanned(testCard2.id(), eustonReader.id(), toMillisSinceEpoch(endTime1));
+        travelTracker.processPayments();
+        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(4.30)));
     }
 
     private long toMillisSinceEpoch(String time){
