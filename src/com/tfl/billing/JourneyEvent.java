@@ -1,6 +1,5 @@
 package com.tfl.billing;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public abstract class JourneyEvent {

@@ -1,11 +1,12 @@
 package com.tfl.billing;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.math.BigDecimal;
 import java.util.*;
 
 public class CostCalculator {
     private final int longJourneyDuration = 25;
-    boolean peakTimeTravel = false;
 
     private static final BigDecimal DAILY_PEAK_CAP = new BigDecimal(9.00);
     private static final BigDecimal DAILY_OFF_PEAK_CAP = new BigDecimal(7.00);
@@ -39,6 +40,7 @@ public class CostCalculator {
     }
 
     private BigDecimal calculateCost(List<Journey> journeys){
+        boolean peakTimeTravel = false;
         BigDecimal totalCost = new BigDecimal(0);
         for (Journey journey : journeys){
             if(isPeak(journey)){
@@ -54,14 +56,18 @@ public class CostCalculator {
                 else
                    totalCost = totalCost.add(OFF_PEAK_SHORT);
             }
+            System.out.println(totalCost);
+            System.out.println(peakTimeTravel);
         }
         if (peakTimeTravel){
-            if(totalCost.compareTo(DAILY_PEAK_CAP) > 0)
+            if(totalCost.compareTo(DAILY_PEAK_CAP) > 0) {
                 totalCost = DAILY_PEAK_CAP;
+            }
         }
         else{
-            if(totalCost.compareTo(DAILY_OFF_PEAK_CAP) > 0)
+            if(totalCost.compareTo(DAILY_OFF_PEAK_CAP) > 0) {
                 totalCost = DAILY_OFF_PEAK_CAP;
+            }
         }
         return roundToNearestPenny(totalCost);
     }

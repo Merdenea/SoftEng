@@ -3,6 +3,7 @@ package com.tfl.billing;
 import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
 import com.tfl.external.Customer;
+import com.tfl.external.CustomerDatabase;
 import com.tfl.underground.Station;
 
 import java.math.BigDecimal;
@@ -16,4 +17,7 @@ public interface CustomerLibInterface {
     void charge(Customer customer, List<Journey> journeys, BigDecimal cost);
 
     OysterCard getOysterCard(String id);
+
+    CustomerDatabase getCustomerDatabase();
+
 }

@@ -36,4 +36,9 @@ public class ExternalLibAdapter implements CustomerLibInterface {
     public void charge(Customer customer, List<Journey> journeys, BigDecimal cost) {
         PaymentsSystem.getInstance().charge(customer, journeys, cost);
     }
+
+    @Override
+    public CustomerDatabase getCustomerDatabase() {
+        return CustomerDatabase.getInstance();
+    }
 }

@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 
 class MainFunctionalityTest {
-
     private OysterCard myCard = new OysterCard("38400000-8cf0-11bd-b23e-10b96e4ef00d");
     private ExternalLibAdapter adapter = new ExternalLibAdapter();
     private OysterCardReader paddingtonReader = adapter.getCardReader(Station.PADDINGTON);
@@ -51,7 +50,7 @@ class MainFunctionalityTest {
     @Test
     void shortOffPeakCorrectCharge(){
         String startTime = "2017/12/04 14:15:00";
-        String endTime = "2017/12/04 14:30:00";
+        String endTime   = "2017/12/04 14:30:00";
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
@@ -65,7 +64,7 @@ class MainFunctionalityTest {
     @Test
     void longOffPeakCorrectCharge(){
         String startTime = "2017/12/04 14:15:00";
-        String endTime = "2017/12/04 14:45:00";
+        String endTime   = "2017/12/04 14:45:00";
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
@@ -79,7 +78,7 @@ class MainFunctionalityTest {
     @Test
     void shortPeakCorrectCharge(){
         String startTime = "2017/12/04 18:15:00";
-        String endTime = "2017/12/04 18:35:00";
+        String endTime   = "2017/12/04 18:35:00";
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
@@ -93,7 +92,7 @@ class MainFunctionalityTest {
     @Test
     void longPeakCorrectCharge(){
         String startTime = "2017/12/04 18:15:00";
-        String endTime = "2017/12/04 18:50:00";
+        String endTime   = "2017/12/04 18:50:00";
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
@@ -107,13 +106,13 @@ class MainFunctionalityTest {
     @Test
     void dailyPeakCapCorrectCharge(){
         String startTime1 = "2017/12/04 12:01:10";
-        String endTime1 = "2017/12/04 12:30:00";
+        String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:35:00";
-        String endTime2 = "2017/12/04 13:02:00";
+        String endTime2   = "2017/12/04 13:02:00";
         String startTime3 = "2017/12/04 13:05:45";
-        String endTime3 = "2017/12/04 14:02:12";
+        String endTime3   = "2017/12/04 14:02:12";
         String startTime4 = "2017/12/04 17:02:01";
-        String endTime4 = "2017/12/04 17.35:09";
+        String endTime4   = "2017/12/04 17:35:09";
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
@@ -130,14 +129,15 @@ class MainFunctionalityTest {
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }
 
+
     @Test
-    void dailyOffPeakCapCorrectCharge(){ ;
+    void dailyOffPeakCapCorrectCharge(){
         String startTime1 = "2017/12/04 12:01:10";
-        String endTime1 = "2017/12/04 12:30:00";
+        String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:35:00";
-        String endTime2 = "2017/12/04 13:02:00";
+        String endTime2   = "2017/12/04 13:02:00";
         String startTime3 = "2017/12/04 13:05:45";
-        String endTime3 = "2017/12/04 14:02:12";
+        String endTime3   = "2017/12/04 14:02:12";
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.getCustomers()).thenReturn(customersTestList);
@@ -170,9 +170,9 @@ class MainFunctionalityTest {
     @Test
     void multipleCustomersTest(){
         String startTime1 = "2017/12/04 12:01:10";
-        String endTime1 = "2017/12/04 12:30:00";
+        String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:15:00";
-        String endTime2 = "2017/12/04 12:28:00";
+        String endTime2   = "2017/12/04 12:28:00";
         OysterCard testCard2 = new OysterCard();
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         when(mockdb.isRegisteredId(testCard2.id())).thenReturn(true);
@@ -194,7 +194,7 @@ class MainFunctionalityTest {
             return date.getTime();
         } catch (ParseException e) {
             System.out.println("Failed to convert string");
-            return  0;
+            return 0;
         }
     }
 }

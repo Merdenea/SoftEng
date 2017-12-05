@@ -64,6 +64,7 @@ public class PaymentProcessor {
         if (customerJourneyEvents.size() % 2 != 0){
             throw new IncompleteJourneyException();
         }
+
         for (JourneyEvent event : customerJourneyEvents){
             if (event instanceof JourneyStart){
                 if (start != null) {

@@ -12,6 +12,7 @@ public class TravelTracker implements ScanListener {
     private Set<UUID> currentlyTravelling = new HashSet<>();
     private CustomerDatabase customerDatabase;
     private PaymentProcessor paymentProcessor;
+    private ExternalLibAdapter adapter = new ExternalLibAdapter();
 
     public TravelTracker (CustomerDatabase customerDatabase){
         this.customerDatabase = customerDatabase;
@@ -30,7 +31,7 @@ public class TravelTracker implements ScanListener {
             eventLog.add(new JourneyEnd(cardId, readerId));
             currentlyTravelling.remove(cardId);
         } else {
-            if (CustomerDatabase.getInstance().isRegisteredId(cardId)) {
+            if (adapter.getCustomerDatabase().isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId));
             } else {
