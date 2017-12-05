@@ -48,7 +48,7 @@ public class TravelTracker implements ScanListener {
         }
 
     }
-    
+
     public void processPayments(){
         paymentProcessor.chargeAccounts(eventLog);
     }
