@@ -15,11 +15,13 @@ apply plugin: 'org.junit.platform.gradle.plugin'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     testCompile(
-            'org.junit.jupiter:junit-jupiter-api:5.0.1'
+            'org.junit.jupiter:junit-jupiter-api:5.0.1',
+            'org.mockito:mockito-core:2+'
     )
     testRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.0.1',
