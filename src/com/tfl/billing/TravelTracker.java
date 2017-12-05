@@ -10,7 +10,13 @@ public class TravelTracker implements ScanListener {
 
     private List<JourneyEvent> eventLog = new ArrayList<>();
     private Set<UUID> currentlyTravelling = new HashSet<>();
-    private PaymentProcessor paymentProcessor = PaymentProcessor.getInstance();
+    private CustomerDatabase customerDatabase;
+    private PaymentProcessor paymentProcessor;
+
+    public TravelTracker (CustomerDatabase customerDatabase){
+        this.customerDatabase = customerDatabase;
+        this.paymentProcessor = new PaymentProcessor(customerDatabase);
+    }
 
     public void connect(OysterCardReader... cardReaders) {
         for (OysterCardReader cardReader : cardReaders) {
@@ -33,12 +39,12 @@ public class TravelTracker implements ScanListener {
         }
     }
 
-    public void cardScanned(UUID cardId, UUID readerId, long time){
+    public void cardScanned(UUID cardId, UUID readerId, long time, CustomerDatabase customerDatabase){
         if (currentlyTravelling.contains(cardId)) {
             eventLog.add(new JourneyEnd(cardId, readerId, time));
             currentlyTravelling.remove(cardId);
         } else {
-            if (CustomerDatabase.getInstance().isRegisteredId(cardId)) {
+            if (customerDatabase.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId, time));
             } else {

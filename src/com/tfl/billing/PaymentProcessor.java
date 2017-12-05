@@ -1,6 +1,7 @@
 package com.tfl.billing;
 
 import com.tfl.external.Customer;
+import com.tfl.external.CustomerDatabase;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,19 +12,18 @@ public class PaymentProcessor {
     //Make the incomplete journey fare equal to the daily peak cap
     private final BigDecimal INCOMPLETE_JOURNEY_FARE = new BigDecimal(9.00);
     private List<JourneyEvent> eventLog;
-    private ExternalLibAdapter adapter = new ExternalLibAdapter();
     private BigDecimal totalDailyCharge;
+    private CustomerDatabase customerDatabase;
+    private ExternalLibAdapter adapter = new ExternalLibAdapter();
 
-    private PaymentProcessor(){}
-    private static PaymentProcessor instance = new PaymentProcessor();
-    public static PaymentProcessor getInstance(){
-        return instance;
+    public PaymentProcessor(CustomerDatabase customerDatabase){
+        this.customerDatabase = customerDatabase;
     }
 
     public void chargeAccounts(List<JourneyEvent> eventLog){
         totalDailyCharge = new BigDecimal(0);
         this.eventLog = eventLog;
-        List<Customer> customers = adapter.getCustomers();
+        List<Customer> customers = customerDatabase.getCustomers();
         for (Customer customer : customers){
             chargeCustomer(customer);
         }
