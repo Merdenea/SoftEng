@@ -12,13 +12,17 @@ public class PaymentProcessor {
     private final BigDecimal INCOMPLETE_JOURNEY_FARE = new BigDecimal(9.00);
     private List<JourneyEvent> eventLog;
     private ExternalLibAdapter adapter = new ExternalLibAdapter();
-    private BigDecimal totalDailyCharge = new BigDecimal(0);
+    private BigDecimal totalDailyCharge;
 
-    public PaymentProcessor(List<JourneyEvent> eventLog){
-        this.eventLog = eventLog;
+    private PaymentProcessor(){}
+    private static PaymentProcessor instance = new PaymentProcessor();
+    public static PaymentProcessor getInstance(){
+        return instance;
     }
 
-    public void chargeAccounts(){
+    public void chargeAccounts(List<JourneyEvent> eventLog){
+        totalDailyCharge = new BigDecimal(0);
+        this.eventLog = eventLog;
         List<Customer> customers = adapter.getCustomers();
         for (Customer customer : customers){
             chargeCustomer(customer);

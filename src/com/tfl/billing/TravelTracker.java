@@ -8,12 +8,9 @@ import java.util.*;
 
 public class TravelTracker implements ScanListener {
 
-    private final List<JourneyEvent> eventLog = new ArrayList<>();
-    private final Set<UUID> currentlyTravelling = new HashSet<>();
-    private final PaymentProcessor paymentProcessor = new PaymentProcessor(eventLog);
-    public Set getCurrentlyTraveling(){
-        return currentlyTravelling;
-    }
+    private List<JourneyEvent> eventLog = new ArrayList<>();
+    private Set<UUID> currentlyTravelling = new HashSet<>();
+    private PaymentProcessor paymentProcessor = PaymentProcessor.getInstance();
 
     public void connect(OysterCardReader... cardReaders) {
         for (OysterCardReader cardReader : cardReaders) {
@@ -51,13 +48,17 @@ public class TravelTracker implements ScanListener {
         }
 
     }
-
+    
     public void processPayments(){
-        paymentProcessor.chargeAccounts();
+        paymentProcessor.chargeAccounts(eventLog);
     }
 
     public BigDecimal getTotalDailyCharges(){
         return paymentProcessor.getTotalDailyCharge();
+    }
+
+    public Set getCurrentlyTraveling(){
+        return currentlyTravelling;
     }
 
 }

@@ -25,6 +25,7 @@ class MainFunctionalityTest {
             return new OysterCard(id);
         }
         catch (UnknownOysterCardException e) {
+
             return testOysterCardSetup(id);
         }
     }
@@ -157,7 +158,6 @@ class MainFunctionalityTest {
        // waterlooReader.touch(myCard);
         //travelTracker.processPayments();
        // assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
-
     }
 
     private long toMillisSinceEpoch(String time){
