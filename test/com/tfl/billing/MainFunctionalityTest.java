@@ -1,12 +1,11 @@
 package com.tfl.billing;
 
-import com.tfl.external.Customer;
-import com.tfl.external.CustomerDatabase;
-import org.junit.jupiter.api.Test;
 import com.oyster.OysterCard;
 import com.oyster.OysterCardReader;
+import com.tfl.external.Customer;
+import com.tfl.external.CustomerDatabase;
 import com.tfl.underground.Station;
-import org.mockito.Mock;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,12 +33,22 @@ class MainFunctionalityTest {
     private TravelTracker travelTracker = new TravelTracker(mockdb);
     private OysterCard testCard = new OysterCard();
     private List<Customer> customersTestList = new ArrayList<>();
+    private OysterCard testCard2 = new OysterCard();
+
+
+    private void setupMockery(){
+        customersTestList.add(new Customer("radu@testing", myCard));
+        customersTestList.add(new Customer("vlad@testing", testCard));
+        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
+        when(mockdb.isRegisteredId(myCard.id())).thenReturn(true);
+        when(mockdb.getCustomers()).thenReturn(customersTestList);
+        when(mockdb.isRegisteredId(testCard2.id())).thenReturn(true);
+        customersTestList.add(new Customer("vlad@testing2", testCard2));
+    }
 
     @Test
     void currentlyTravelingTest(){
-        when(mockdb.isRegisteredId(myCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("radu@testing", myCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
+        setupMockery();
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         travelTracker.cardScanned(myCard.id(), paddingtonReader.id(), System.currentTimeMillis(), mockdb);
         assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(true));
@@ -49,11 +58,9 @@ class MainFunctionalityTest {
 
     @Test
     void shortOffPeakCorrectCharge(){
+        setupMockery();
         String startTime = "2017/12/04 14:15:00";
         String endTime   = "2017/12/04 14:30:00";
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
         travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
@@ -63,11 +70,9 @@ class MainFunctionalityTest {
 
     @Test
     void longOffPeakCorrectCharge(){
+        setupMockery();
         String startTime = "2017/12/04 14:15:00";
         String endTime   = "2017/12/04 14:45:00";
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
         travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
@@ -77,11 +82,9 @@ class MainFunctionalityTest {
 
     @Test
     void shortPeakCorrectCharge(){
+        setupMockery();
         String startTime = "2017/12/04 18:15:00";
         String endTime   = "2017/12/04 18:35:00";
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
         travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
@@ -91,11 +94,9 @@ class MainFunctionalityTest {
 
     @Test
     void longPeakCorrectCharge(){
+        setupMockery();
         String startTime = "2017/12/04 18:15:00";
         String endTime   = "2017/12/04 18:50:00";
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
         travelTracker.connect(paddingtonReader, bakerStreetReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
         travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
@@ -105,6 +106,7 @@ class MainFunctionalityTest {
 
     @Test
     void dailyPeakCapCorrectCharge(){
+        setupMockery();
         String startTime1 = "2017/12/04 12:01:10";
         String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:35:00";
@@ -113,9 +115,6 @@ class MainFunctionalityTest {
         String endTime3   = "2017/12/04 14:02:12";
         String startTime4 = "2017/12/04 17:02:01";
         String endTime4   = "2017/12/04 17:35:09";
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
         travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), mockdb);
@@ -132,16 +131,13 @@ class MainFunctionalityTest {
 
     @Test
     void dailyOffPeakCapCorrectCharge(){
+        setupMockery();
         String startTime1 = "2017/12/04 12:01:10";
         String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:35:00";
         String endTime2   = "2017/12/04 13:02:00";
         String startTime3 = "2017/12/04 13:05:45";
         String endTime3   = "2017/12/04 14:02:12";
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
-        System.out.println(testCard.id());
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
         travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
         travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), mockdb);
@@ -156,9 +152,7 @@ class MainFunctionalityTest {
 
     @Test
     void incompleteJourneyCorrectCharge(){
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
+        setupMockery();
         travelTracker.connect(victoriaReader, eustonReader, waterlooReader);
         travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), mockdb);
         travelTracker.cardScanned(testCard.id(), eustonReader.id(), System.currentTimeMillis(), mockdb);
@@ -169,16 +163,11 @@ class MainFunctionalityTest {
 
     @Test
     void multipleCustomersTest(){
+        setupMockery();
         String startTime1 = "2017/12/04 12:01:10";
         String endTime1   = "2017/12/04 12:30:00";
         String startTime2 = "2017/12/04 12:15:00";
         String endTime2   = "2017/12/04 12:28:00";
-        OysterCard testCard2 = new OysterCard();
-        when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
-        when(mockdb.isRegisteredId(testCard2.id())).thenReturn(true);
-        customersTestList.add(new Customer("vlad@testing", testCard));
-        customersTestList.add(new Customer("vlad@testing2", testCard2));
-        when(mockdb.getCustomers()).thenReturn(customersTestList);
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader);
         travelTracker.cardScanned(testCard2.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
         travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(startTime2), mockdb);
