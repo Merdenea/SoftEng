@@ -74,13 +74,14 @@ public class PaymentProcessor {
                     continue;
                 }
             }
-            if (event instanceof JourneyEnd && start != null){
+            if (event instanceof JourneyEnd && start instanceof JourneyStart){
                 journeys.add(new Journey(start, event));
                 start = null;
-            }
-            if (start != null) {
+                continue;
+            }else {
                 throw new IncompleteJourneyException();
             }
+
         }
         return journeys;
     }

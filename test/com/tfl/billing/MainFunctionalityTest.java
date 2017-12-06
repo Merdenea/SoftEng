@@ -34,6 +34,8 @@ class MainFunctionalityTest {
     private OysterCard testCard = new OysterCard();
     private List<Customer> customersTestList = new ArrayList<>();
     private OysterCard testCard2 = new OysterCard();
+    private final boolean touchIn  = true;
+    private final boolean touchOut = false;
 
 
     private void setupMockery(){
@@ -50,9 +52,9 @@ class MainFunctionalityTest {
     void currentlyTravelingTest(){
         setupMockery();
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(myCard.id(), paddingtonReader.id(), System.currentTimeMillis(), mockdb);
+        travelTracker.cardScanned(myCard.id(), paddingtonReader.id(), System.currentTimeMillis(),touchIn, mockdb);
         assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(true));
-        travelTracker.cardScanned(myCard.id(), bakerStreetReader.id(), System.currentTimeMillis(), mockdb);
+        travelTracker.cardScanned(myCard.id(), bakerStreetReader.id(), System.currentTimeMillis(),touchOut, mockdb);
         assertThat(travelTracker.getCurrentlyTraveling().contains(myCard.id()), is(false));
     }
 
@@ -62,8 +64,8 @@ class MainFunctionalityTest {
         String startTime = "2017/12/04 14:15:00";
         String endTime   = "2017/12/04 14:30:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(1.60)));
     }
@@ -74,8 +76,8 @@ class MainFunctionalityTest {
         String startTime = "2017/12/04 14:15:00";
         String endTime   = "2017/12/04 14:45:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime),touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(2.70)));
     }
@@ -86,8 +88,8 @@ class MainFunctionalityTest {
         String startTime = "2017/12/04 18:15:00";
         String endTime   = "2017/12/04 18:35:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime),touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(2.90)));
     }
@@ -98,8 +100,8 @@ class MainFunctionalityTest {
         String startTime = "2017/12/04 18:15:00";
         String endTime   = "2017/12/04 18:50:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(3.80)));
     }
@@ -116,14 +118,14 @@ class MainFunctionalityTest {
         String startTime4 = "2017/12/04 17:02:01";
         String endTime4   = "2017/12/04 17:35:09";
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2), mockdb);
-        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2), mockdb);
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3), mockdb);
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3), mockdb);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime4), mockdb);
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime4), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime4), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime4), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }
@@ -139,12 +141,12 @@ class MainFunctionalityTest {
         String startTime3 = "2017/12/04 13:05:45";
         String endTime3   = "2017/12/04 14:02:12";
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader, waterlooReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), mockdb);
-        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2), mockdb);
-        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2), mockdb);
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3), mockdb);
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3), mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(startTime2), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(endTime2), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), toMillisSinceEpoch(startTime3), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), toMillisSinceEpoch(endTime3), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(7.00)));
     }
@@ -154,12 +156,33 @@ class MainFunctionalityTest {
     void incompleteJourneyCorrectCharge(){
         setupMockery();
         travelTracker.connect(victoriaReader, eustonReader, waterlooReader);
-        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), mockdb);
-        travelTracker.cardScanned(testCard.id(), eustonReader.id(), System.currentTimeMillis(), mockdb);
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), System.currentTimeMillis(), mockdb);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), System.currentTimeMillis(), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), System.currentTimeMillis(), touchIn, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }
+
+    @Test
+    void incompleteJourneysWithTwoStarts(){
+        setupMockery();
+        travelTracker.connect(victoriaReader, waterlooReader);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), System.currentTimeMillis(), touchIn, mockdb);
+        travelTracker.processPayments();
+        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
+    }
+
+    @Test
+    void incompleteJourneysWithTwoEnds(){
+        setupMockery();
+        travelTracker.connect(victoriaReader, waterlooReader);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), System.currentTimeMillis(), touchOut, mockdb);
+        travelTracker.processPayments();
+        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
+    }
+
 
     @Test
     void multipleCustomersTest(){
@@ -169,10 +192,10 @@ class MainFunctionalityTest {
         String startTime2 = "2017/12/04 12:15:00";
         String endTime2   = "2017/12/04 12:28:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader, victoriaReader, eustonReader);
-        travelTracker.cardScanned(testCard2.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), mockdb);
-        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(startTime2), mockdb);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(endTime2), mockdb);
-        travelTracker.cardScanned(testCard2.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), mockdb);
+        travelTracker.cardScanned(testCard2.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime1), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), toMillisSinceEpoch(startTime2), touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(endTime2), touchOut, mockdb);
+        travelTracker.cardScanned(testCard2.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(4.30)));
     }
