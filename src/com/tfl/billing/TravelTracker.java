@@ -25,6 +25,10 @@ public class TravelTracker implements ScanListener {
         }
     }
 
+    /*As the external classes can not be changed, we have to leave this method here
+      but should not be used
+     */
+    @Deprecated
     @Override
     public void cardScanned(UUID cardId, UUID readerId){
         if (currentlyTravelling.contains(cardId)) {
@@ -39,7 +43,7 @@ public class TravelTracker implements ScanListener {
             }
         }
     }
-
+  /* This implementation of cardScanned should be used from now on*/
     public void cardScanned(UUID cardId, UUID readerId, long time,boolean isTouchIn, CustomerDatabase customerDatabase){
         if(isTouchIn){
             if (customerDatabase.isRegisteredId(cardId)) {

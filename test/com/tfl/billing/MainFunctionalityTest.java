@@ -28,12 +28,14 @@ class MainFunctionalityTest {
     private OysterCardReader victoriaReader = adapter.getCardReader(Station.VICTORIA_STATION);
     private OysterCardReader eustonReader = adapter.getCardReader(Station.EUSTON);
     private OysterCardReader waterlooReader = adapter.getCardReader(Station.WATERLOO);
+
     //Mock databse to avoid unknownoystercard exceptions
     private CustomerDatabase mockdb = mock(CustomerDatabase.class);
     private TravelTracker travelTracker = new TravelTracker(mockdb);
     private OysterCard testCard = new OysterCard();
     private List<Customer> customersTestList = new ArrayList<>();
     private OysterCard testCard2 = new OysterCard();
+
     private final boolean touchIn  = true;
     private final boolean touchOut = false;
 
@@ -88,7 +90,7 @@ class MainFunctionalityTest {
         String startTime = "2017/12/04 18:15:00";
         String endTime   = "2017/12/04 18:35:00";
         travelTracker.connect(paddingtonReader, bakerStreetReader);
-        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime),touchIn, mockdb);
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id(), toMillisSinceEpoch(startTime), touchIn, mockdb);
         travelTracker.cardScanned(testCard.id(), bakerStreetReader.id(), toMillisSinceEpoch(endTime), touchOut, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(2.90)));
@@ -176,9 +178,10 @@ class MainFunctionalityTest {
     @Test
     void incompleteJourneysWithTwoEnds(){
         setupMockery();
-        travelTracker.connect(victoriaReader, waterlooReader);
+        travelTracker.connect(victoriaReader, eustonReader);
         travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchOut, mockdb);
-        travelTracker.cardScanned(testCard.id(), waterlooReader.id(), System.currentTimeMillis(), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), eustonReader.id(), System.currentTimeMillis(), touchOut, mockdb);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchIn, mockdb);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }

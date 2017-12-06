@@ -77,7 +77,6 @@ public class PaymentProcessor {
             if (event instanceof JourneyEnd && start instanceof JourneyStart){
                 journeys.add(new Journey(start, event));
                 start = null;
-                continue;
             }else {
                 throw new IncompleteJourneyException();
             }
