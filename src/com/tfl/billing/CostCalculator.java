@@ -1,9 +1,7 @@
 package com.tfl.billing;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
 
 public class CostCalculator {
     private final int longJourneyDuration = 25;
@@ -56,8 +54,6 @@ public class CostCalculator {
                 else
                    totalCost = totalCost.add(OFF_PEAK_SHORT);
             }
-            System.out.println(totalCost);
-            System.out.println(peakTimeTravel);
         }
         if (peakTimeTravel){
             if(totalCost.compareTo(DAILY_PEAK_CAP) > 0) {
