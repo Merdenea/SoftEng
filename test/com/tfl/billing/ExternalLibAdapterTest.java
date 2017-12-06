@@ -33,4 +33,9 @@ class ExternalLibAdapterTest {
         assertThat(adapter.getCardReader(Station.VICTORIA_STATION), is(equalTo(OysterReaderLocator.atStation(Station.VICTORIA_STATION))));
         assertThat(adapter.getCardReader(Station.EUSTON), is(equalTo(OysterReaderLocator.atStation(Station.EUSTON))));
     }
+
+    @Test
+    void getCustomerDatabase(){
+        assertThat(adapter.getCustomerDatabase(), is(CustomerDatabase.getInstance()));
+    }
 }

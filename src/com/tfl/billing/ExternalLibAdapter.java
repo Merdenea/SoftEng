@@ -31,7 +31,7 @@ public class ExternalLibAdapter implements CustomerLibInterface {
         OysterCardReader reader =  OysterReaderLocator.atStation(station);
         return reader;
     }
-
+    
     @Override
     public void charge(Customer customer, List<Journey> journeys, BigDecimal cost) {
         PaymentsSystem.getInstance().charge(customer, journeys, cost);
