@@ -11,7 +11,6 @@ public class TravelTracker implements ScanListener {
     private List<JourneyEvent> eventLog = new ArrayList<>();
     private Set<UUID> currentlyTravelling = new HashSet<>();
     private PaymentProcessor paymentProcessor;
-    private ExternalLibAdapter adapter = new ExternalLibAdapter();
     private CustomerDatabase customerDatabase;
 
     /*The constructor takes in the database instance and passes it to the
@@ -37,7 +36,7 @@ public class TravelTracker implements ScanListener {
             eventLog.add(new JourneyEnd(cardId, readerId));
             currentlyTravelling.remove(cardId);
         } else {
-            if (adapter.getCustomerDatabase().isRegisteredId(cardId)) {
+            if (customerDatabase.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
                 eventLog.add(new JourneyStart(cardId, readerId));
             } else {

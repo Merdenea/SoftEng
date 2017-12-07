@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,7 +36,7 @@ class MainFunctionalityTest {
     private OysterCard testCard = new OysterCard();
     private List<Customer> customersTestList = new ArrayList<>();
     private OysterCard testCard2 = new OysterCard();
-
+    private OysterCard unregisterOysterCard = new OysterCard();
     private final boolean touchIn  = true;
     private final boolean touchOut = false;
 
@@ -45,6 +46,7 @@ class MainFunctionalityTest {
         customersTestList.add(new Customer("vlad@testing", testCard));
         when(mockdb.isRegisteredId(testCard.id())).thenReturn(true);
         when(mockdb.isRegisteredId(myCard.id())).thenReturn(true);
+        when(mockdb.isRegisteredId(unregisterOysterCard.id())).thenReturn(false);
         when(mockdb.getCustomers()).thenReturn(customersTestList);
         when(mockdb.isRegisteredId(testCard2.id())).thenReturn(true);
         customersTestList.add(new Customer("vlad@testing2", testCard2));
@@ -182,6 +184,7 @@ class MainFunctionalityTest {
         travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchOut);
         travelTracker.cardScanned(testCard.id(), eustonReader.id(), System.currentTimeMillis(), touchOut);
         travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchIn);
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id(), System.currentTimeMillis(), touchOut);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(9.00)));
     }
@@ -201,6 +204,37 @@ class MainFunctionalityTest {
         travelTracker.cardScanned(testCard2.id(), eustonReader.id(), toMillisSinceEpoch(endTime1), touchOut);
         travelTracker.processPayments();
         assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(equalTo(4.30)));
+    }
+
+    @Test
+    void unknownOysterCardExceptionIsThrown(){
+        setupMockery();
+        boolean exceptionThrown = false;
+        travelTracker.connect(eustonReader);
+        try {
+            travelTracker.cardScanned(unregisterOysterCard.id(), eustonReader.id(), System.currentTimeMillis(), touchIn);
+        }catch (UnknownOysterCardException e){
+            exceptionThrown = true;
+        }
+        assertThat(exceptionThrown, is(true));
+    }
+
+    @Deprecated
+    @Test
+    void oldCardScannedTest (){
+        setupMockery();
+        boolean exceptionThrown = false;
+        travelTracker.connect(victoriaReader, paddingtonReader);
+        try {
+            travelTracker.cardScanned(victoriaReader.id(), unregisterOysterCard.id());
+        }catch (UnknownOysterCardException e){
+            exceptionThrown = true;
+        }
+        travelTracker.cardScanned(testCard.id(), paddingtonReader.id());
+        travelTracker.cardScanned(testCard.id(), victoriaReader.id());
+        travelTracker.processPayments();
+        assertThat(exceptionThrown, is(true));
+        assertThat(travelTracker.getTotalDailyCharges().doubleValue(), is(anyOf(equalTo(1.60), equalTo(2.90))));
     }
 
     private long toMillisSinceEpoch(String time){

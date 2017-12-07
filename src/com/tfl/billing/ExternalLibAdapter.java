@@ -11,7 +11,7 @@ import com.tfl.underground.Station;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ExternalLibAdapter implements CustomerLibInterface {
+public class ExternalLibAdapter implements ExternalLibInterface {
 
 
     @Override

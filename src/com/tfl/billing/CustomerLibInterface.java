@@ -9,7 +9,7 @@ import com.tfl.underground.Station;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface CustomerLibInterface {
+public interface ExternalLibInterface {
     List<Customer> getCustomers();
 
     OysterCardReader getCardReader(Station station);

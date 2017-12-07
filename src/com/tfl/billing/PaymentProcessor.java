@@ -51,7 +51,7 @@ public class PaymentProcessor {
     }
 
     private List<Journey> createJourneyList (Customer customer) throws IncompleteJourneyException{
-        List<JourneyEvent> customerJourneyEvents = new ArrayList<JourneyEvent>();
+        List<JourneyEvent> customerJourneyEvents = new ArrayList<>();
         for (JourneyEvent journeyEvent : eventLog){
             if (journeyEvent.cardId().equals(customer.cardId())){
                 customerJourneyEvents.add(journeyEvent);
@@ -74,7 +74,7 @@ public class PaymentProcessor {
                     continue;
                 }
             }
-            if (event instanceof JourneyEnd && start instanceof JourneyStart){
+            if (event instanceof JourneyEnd && start != null){
                 journeys.add(new Journey(start, event));
                 start = null;
             }else {
