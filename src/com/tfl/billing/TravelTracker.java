@@ -1,6 +1,7 @@
 package com.tfl.billing;
 
-import com.oyster.*;
+import com.oyster.OysterCardReader;
+import com.oyster.ScanListener;
 import com.tfl.external.CustomerDatabase;
 
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ public class TravelTracker implements ScanListener {
     private CustomerDatabase customerDatabase;
 
     /*The constructor takes in the database instance and passes it to the
-    * paymentprocessor constructor*/
+    * paymentProcessor constructor*/
     public TravelTracker (CustomerDatabase customerDatabase){
         this.customerDatabase = customerDatabase;
         this.paymentProcessor = new PaymentProcessor(customerDatabase);
@@ -44,7 +45,8 @@ public class TravelTracker implements ScanListener {
             }
         }
     }
-  /* This implementation of cardScanned should be used from now on*/
+
+    /* This implementation of cardScanned should be used from now on*/
     public void cardScanned(UUID cardId, UUID readerId, long time,boolean isTouchIn){
         if(isTouchIn){
             if (customerDatabase.isRegisteredId(cardId)) {
@@ -58,7 +60,6 @@ public class TravelTracker implements ScanListener {
             if(currentlyTravelling.contains(cardId))
                 currentlyTravelling.remove(cardId);
         }
-
     }
 
     public void processPayments(){

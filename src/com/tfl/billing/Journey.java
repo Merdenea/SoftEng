@@ -1,10 +1,9 @@
 package com.tfl.billing;
 
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Journey {
@@ -26,11 +25,11 @@ public class Journey {
     }
 
     public String formattedStartTime() {
-        return format(start.time());
+        return format(startTime());
     }
 
     public String formattedEndTime() {
-        return format(end.time());
+        return format(endTime());
     }
 
     public LocalDateTime startTime() {
@@ -49,7 +48,8 @@ public class Journey {
         return "" + durationSeconds() / 60 + ":" + durationSeconds() % 60;
     }
 
-    private String format(long time) {
-        return SimpleDateFormat.getInstance().format(new Date(time));
+    private String format(LocalDateTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        return time.format(formatter);
     }
 }

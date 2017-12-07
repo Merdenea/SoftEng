@@ -23,7 +23,7 @@ public abstract class JourneyEvent {
         if(readerId != null && cardId != null) {
             this.cardId = cardId;
             this.readerId = readerId;
-            this.time = time;
+            this.time = time != 0 ? time : System.currentTimeMillis();
         }
         else {
             throw new NullArgumentException();

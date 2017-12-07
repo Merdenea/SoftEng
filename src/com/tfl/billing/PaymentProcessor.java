@@ -61,6 +61,7 @@ public class PaymentProcessor {
         List<Journey> journeys = new ArrayList<>();
         JourneyEvent start = null;
 
+        /*Look for incomplete journeys*/
         if (customerJourneyEvents.size() % 2 != 0){
             throw new IncompleteJourneyException();
         }
@@ -80,7 +81,6 @@ public class PaymentProcessor {
             }else {
                 throw new IncompleteJourneyException();
             }
-
         }
         return journeys;
     }
