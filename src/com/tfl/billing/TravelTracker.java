@@ -10,10 +10,12 @@ public class TravelTracker implements ScanListener {
 
     private List<JourneyEvent> eventLog = new ArrayList<>();
     private Set<UUID> currentlyTravelling = new HashSet<>();
-    private CustomerDatabase customerDatabase;
     private PaymentProcessor paymentProcessor;
     private ExternalLibAdapter adapter = new ExternalLibAdapter();
+    private CustomerDatabase customerDatabase;
 
+    /*The constructor takes in the database instance and passes it to the
+    * paymentprocessor constructor*/
     public TravelTracker (CustomerDatabase customerDatabase){
         this.customerDatabase = customerDatabase;
         this.paymentProcessor = new PaymentProcessor(customerDatabase);
@@ -44,7 +46,7 @@ public class TravelTracker implements ScanListener {
         }
     }
   /* This implementation of cardScanned should be used from now on*/
-    public void cardScanned(UUID cardId, UUID readerId, long time,boolean isTouchIn, CustomerDatabase customerDatabase){
+    public void cardScanned(UUID cardId, UUID readerId, long time,boolean isTouchIn){
         if(isTouchIn){
             if (customerDatabase.isRegisteredId(cardId)) {
                 currentlyTravelling.add(cardId);
